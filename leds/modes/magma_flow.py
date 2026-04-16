@@ -2,6 +2,9 @@ from time import sleep
 
 from RGBSTRIP import RGBSTRIP
 
+# like a led chaser, but with multiple moving snakes
+# all snakes
+
 strip = RGBSTRIP(data_pin = 27, n_leds = 20)
 
 palette = (

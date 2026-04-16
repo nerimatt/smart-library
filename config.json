@@ -1,0 +1,22 @@
+{
+    "boot": false,
+    "tick": 30,
+
+    "led_strips": {
+        "pin_1": 12,
+        "pin_2": 13
+    },
+
+    "io": {
+        "pin_button_green": 33,
+        "pin_button_red": 32,
+        "pin_potentiometer": 35
+    },
+
+    "screen": {
+        "pin_sda": 27,
+        "pin_scl": 14,
+        "freq": 400000
+
+    }
+}
