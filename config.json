@@ -3,6 +3,7 @@
     "tick": 30,
 
     "led_strips": {
+        "default_color": [255, 191, 0],
         "pin_1": 12,
         "pin_2": 13
     },
