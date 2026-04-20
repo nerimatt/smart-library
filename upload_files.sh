@@ -20,5 +20,5 @@ if $wipe_flag; then
     echo "wiping first..." && mpremote cp wipe.py : && mpremote run wipe.py
 fi
 
-mpremote fs cp -r * :
+mpremote fs cp -r $(ls | grep -v firmware) :
 

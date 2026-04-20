@@ -33,7 +33,7 @@ def main():
     if btn_red.value(): #NOTE: hold red button to avoid booting
 
         logger.Error("Did not have permissions to boot")
-        sys.exit()
+        return
 
     logger.Info("Booting up")
 
@@ -43,6 +43,7 @@ def main():
 
     #import tests.test_components.screen
     # import tests.test_components.test_led_strips.py
+    # import tests.test_components.test_led_cluster
 
 if __name__ == "__main__":
     main()
