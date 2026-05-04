@@ -4,6 +4,7 @@ from time import sleep
 
 from leds.LED_strip import LED_strip
 
+# NOTE: wrapper of existing strip, so you could create overlapping segments or duplicates with no problem
 class LED_segment:
     def __init__(self, strip: led_strip, idx_start: int, len: int) -> None:
 

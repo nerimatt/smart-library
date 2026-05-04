@@ -2,6 +2,7 @@
 # run wipe only with ./upload_files.sh --wipe so its contained
 
 
+import machine # check if we are on esp
 import os
 
 DIRECTORY_MARKER = 32768

@@ -84,12 +84,12 @@ class RGBSTRIP:
 
 
 leds_per_segment = 20
-segments = 1
+segments = 8
 
 PIN_STRIP_1 = 12
 PIN_STRIP_2 = 13
 
-# strip = RGBSTRIP(data_pin = PIN_STRIP_1, n_leds = segments * leds_per_segment)
+strip = RGBSTRIP(data_pin = PIN_STRIP_1, n_leds = segments * leds_per_segment)
 strip2 = RGBSTRIP(data_pin = PIN_STRIP_2, n_leds = segments * leds_per_segment) #NOTE: not powerful enought for both (w! psu), test one at a time
 
 def get_random_color():
@@ -99,9 +99,9 @@ print("testing leds")
 while True: # Run forever
     col = get_random_color()
 
-    # strip.fade(col)
-
+    strip.fade(col)
     strip2.fade(col)
+
     #strip.fade(color = (255, 255, 255))
 
     #strip.led_chase(bg_color = get_random_color(), snake_color = get_random_color(), snake_len = randint(1, 5))

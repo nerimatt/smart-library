@@ -21,3 +21,6 @@ for idx, seg in enumerate(cluster.leds):
 
 
 cluster.off()
+
+# cluster.leds[17].fill((255, 255, 255))
+# cluster.update()

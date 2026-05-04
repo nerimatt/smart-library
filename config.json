@@ -5,7 +5,10 @@
     "led_strips": {
         "default_color": [255, 191, 0],
         "pin_1": 12,
-        "pin_2": 13
+        "pin_2": 13,
+
+        "segment_length": 20,
+        "segments_per_strip": 8
     },
 
     "io": {

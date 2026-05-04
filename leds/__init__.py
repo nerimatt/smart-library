@@ -1,9 +1,11 @@
 from leds.LED_strip import LED_strip
 from leds.LED_cluster import LED_cluster, LED_segment
 
+from time import sleep
+
 def cluster_create(config) -> LED_cluster:
-    segment_length = 20
-    segments_per_strip = 8
+    segment_length = config["led_strips"]["segment_length"]
+    segments_per_strip = config["led_strips"]["segments_per_strip"]
 
     PIN_STRIP_1 = config["led_strips"]["pin_1"]
     PIN_STRIP_2 = config["led_strips"]["pin_2"]
@@ -22,15 +24,15 @@ def cluster_create(config) -> LED_cluster:
         seg(2), seg(3), seg(4),
         seg(7), seg(6), seg(5),
         seg(0, strip2), seg(1, strip2), None,
-        None, None, None,
-        None, None, None,
+        seg(4, strip2), seg(3, strip2), seg(2, strip2),
+        seg(5, strip2), seg(6, strip2), seg(7, strip2),
     ]
 
     return LED_cluster(leds, 3, [strip, strip2], config["led_strips"]["default_color"])
 
 
 def cluster_blink(cluster: LED_cluster, iterations: int):
-    interval = 0.5
+    interval = 1
 
     cluster.off()
 
