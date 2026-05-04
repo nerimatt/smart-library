@@ -1,6 +1,6 @@
 {
     "boot": false,
-    "tick": 30,
+    "fps": 30,
 
     "led_strips": {
         "default_color": [255, 191, 0],

@@ -39,6 +39,7 @@ class RGBSTRIP:
         self.strip.fill((0, 0, 0))
         self.strip.write()
 
+    # one call is one whole cycle TODO: animate per frame
     def fade(self, color = (255, 255, 255), step = 400, delay = 0.005):
         # Iterate from 1 to 255 in steps of 1
         for i in range(1, step, 1):
