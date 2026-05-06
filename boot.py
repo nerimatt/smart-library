@@ -3,6 +3,7 @@ from machine import ADC, Pin
 import sys
 from time import sleep
 
+from wifi import wifi_connect
 from config import conf_load
 from logger import Logger
 import leds
@@ -41,13 +42,16 @@ def main():
 
 
     ############## start ##############
+    if not conf["offline"]: wifi_connect(logger, conf["debugging"])
+
     leds.cluster_blink(cluster, 3)
 
     #import tests.test_components.screen
     # import tests.test_components.test_led_strips.py
     # import tests.test_components.test_led_cluster
 
-    cluster_animation_manager.set_animation(Animation_Manager.FADE)
+    cluster_animation_manager.set_animation(Animation_Manager.FADE, {"color": (255, 0, 0)})
+
 
     while True:
         cluster_animation_manager.step()

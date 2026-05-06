@@ -1,6 +1,8 @@
 {
     "boot": false,
     "fps": 30,
+    "offline": false,
+    "debugging": true,
 
     "led_strips": {
         "default_color": [255, 191, 0],

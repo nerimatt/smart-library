@@ -23,13 +23,13 @@ class Animation_Manager:
             fade_animation(cluster, conf["led_strips"]["default_color"])
         ]
 
-    def set_animation(self, animation_enum):
+    def set_animation(self, animation_enum: int, animation_options: dict):
         if not (0 <= animation_enum < len(self.animations)):
             self.logger.Error("selected animation does not exist")
             return
 
         self.current_animation = self.animations[animation_enum]
-
+        self.current_animation.set_options(animation_options)
 
     # perform one frame of the selected animation
     # NOTE: the cluster is updated in main, outside of this, in case some other changes are made
