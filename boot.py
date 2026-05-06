@@ -3,6 +3,7 @@ from machine import ADC, Pin
 import sys
 from time import sleep
 
+from config import conf_load
 from logger import Logger
 import leds
 from leds.animation_manager import Animation_Manager
@@ -10,9 +11,7 @@ from leds.animation_manager import Animation_Manager
 def main():
     logger = Logger()
 
-    with open("config.json", "r") as file:
-        conf = load(file)
-        # print(conf)
+    conf = conf_load()
 
     if not conf["boot"]:
         logger.Info("Boot disabled in config, exiting")

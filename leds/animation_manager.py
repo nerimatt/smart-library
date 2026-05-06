@@ -46,3 +46,22 @@ class Animation_Manager:
 
 
 
+if __name__ == "__main__":
+    import leds
+    from config import conf_load
+
+    logger = Logger()
+
+    conf = conf_load()
+
+    cluster = leds.cluster_create(conf)
+    cluster_animation_manager = Animation_Manager(logger, cluster, conf)
+
+
+    cluster_animation_manager.set_animation(Animation_Manager.FADE)
+
+    while True:
+        cluster_animation_manager.step()
+        cluster.update()
+
+        sleep(1 / conf["fps"])
