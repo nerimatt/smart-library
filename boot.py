@@ -3,6 +3,7 @@ from machine import ADC, Pin
 import sys
 from time import sleep
 
+from sdcard import mount_sd_card
 from wifi import wifi_connect
 from config import conf_load
 from logger import Logger
@@ -13,6 +14,11 @@ def main():
     logger = Logger()
 
     conf = conf_load()
+
+    if conf["mount_sd"]:
+        mount_sd_card(logger)
+    else:
+        logger.Info("sd card disabled in config")
 
     if not conf["boot"]:
         logger.Info("Boot disabled in config, exiting")

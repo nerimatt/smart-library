@@ -304,3 +304,43 @@ class SDCard:
             return self.sectors
         if op == 5:  # get block size in bytes
             return 512
+
+# https://www.youtube.com/watch?v=qL2g5YIVick&ab_channel=TechToTinker
+from logger import Logger
+
+def mount_sd_card(logger, folder = "/sd"):
+    import os
+    from machine import Pin, SoftSPI
+    from sdcard import SDCard
+
+    """
+    pin assignment
+    vcc -> 5v
+    gnd -> gnd
+    cs -> g15
+    sck -> g2
+    mosi -> g0
+    miso -> g4
+
+    """
+
+    spisd = SoftSPI(
+        -1,
+        miso = Pin(4),
+        mosi = Pin(0),
+        sck = Pin(2)
+    )
+    sd = SDCard(spisd, Pin(15))
+
+    vfs = os.VfsFat(sd)
+    os.mount(vfs, folder)
+    #os.chdir("sd")
+    #print("sd card contains:", os.listdir())
+    logger.Info(f"mounted sd card in '{folder}'")
+
+if __name__ == "__main__":
+    logger = Logger()
+    mount_sd_card(logger)
+
+    from os import listdir
+    print(listdir("/sd"))

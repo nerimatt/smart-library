@@ -3,6 +3,7 @@
     "fps": 30,
     "offline": false,
     "debugging": true,
+    "mount_sd": false,
 
     "led_strips": {
         "default_color": [255, 191, 0],
