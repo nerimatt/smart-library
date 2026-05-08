@@ -25,7 +25,7 @@ class LED_segment:
         self.fill((0, 0, 0))
 
     def set(self, idx, col = (0, 0, 0)):
-        if not (0 <= idx <= self.len):
+        if not (0 <= idx < self.len):
             print("LED SEGMENT out of bounds index in set")
             return self
 
@@ -45,6 +45,10 @@ class LED_cluster:
         self.height = len(self.leds) / self.width
 
         self.default_color = default_color
+
+        self.len_flat = 0
+        for strip in self.strips_used:
+            self.len_flat += strip.len
 
     def fill(self, col = (0, 0, 0)) -> LED_cluster:
         for strip in self.strips_used:
@@ -69,7 +73,7 @@ class LED_cluster:
         explored_x = 0
         seg = None
         for seg_idx in range(self.width):
-            seg = self.leds[y * self.height + seg_idx]
+            seg = self.leds[int(y * self.height) + seg_idx]
             if seg == None: continue
 
             if seg.len + explored_x > x:
@@ -82,12 +86,25 @@ class LED_cluster:
 
         return self
 
+    # NOTE: flat functions treat whole cluster as one big array
+    def set_flat(self, idx: int, col = (255, 255, 255)):
+        visited = 0
+        for strip in self.strips_used:
+            if idx - visited >= strip.len:
+                visited += strip.len # so it works even with segments of diff length
+                continue
+
+            strip.set(idx - visited, col)
+            return
+
+
 
 
 if __name__ == "__main__":
     import config
+    import leds
 
     conf = config.conf_load()
 
-    cluster = cluster_create(conf)
+    cluster = leds.cluster_create(conf)
     cluster_blink(cluster, 3)

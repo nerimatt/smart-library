@@ -28,7 +28,7 @@ class Animation_Manager:
         self.animations = [
             fade_animation(cluster, conf["led_strips"]["default_color"]),
             rainbow_animation(cluster),
-            led_chase_animation(cluster, snake_len = 10),
+            led_chase_animation(cluster),
         ]
 
     def set_animation(self, animation_enum: int, animation_options: dict = None):
