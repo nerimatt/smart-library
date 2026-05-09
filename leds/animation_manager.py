@@ -68,9 +68,9 @@ if __name__ == "__main__":
     cluster_animation_manager = Animation_Manager(logger, cluster, conf)
 
 
-    # cluster_animation_manager.set_animation(Animation_Manager.FADE)
+    cluster_animation_manager.set_animation(Animation_Manager.FADE)
     # cluster_animation_manager.set_animation(Animation_Manager.RAINBOW)
-    cluster_animation_manager.set_animation(Animation_Manager.LED_CHASE)
+    # cluster_animation_manager.set_animation(Animation_Manager.LED_CHASE)
 
     while True:
         cluster_animation_manager.step()

@@ -1,0 +1,8 @@
+.git
+.espignore
+
+firmware
+models
+README.md
+upload_dir.sh
+upload_files.sh

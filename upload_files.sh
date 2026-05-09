@@ -1,3 +1,4 @@
+#!/bin/bash
 
 wipe_flag=false
 
@@ -20,5 +21,12 @@ if $wipe_flag; then
     echo "wiping first..." && mpremote cp wipe.py : && mpremote run wipe.py
 fi
 
-mpremote fs cp -r $(ls | grep -v -e "firmware" -e "models") :
+# get files in espignore, ignoring spaces
+# pass in other grep with -f to accept these as params
+# -x only match whole line
+# -v exclude
+# -F dont treat strings as regex
+files2upload="$(ls | grep -vFxf <(grep -v '^[[:space:]]*$' .espignore))"
+
+mpremote fs cp -r $files2upload :
 
