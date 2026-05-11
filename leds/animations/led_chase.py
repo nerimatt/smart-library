@@ -5,7 +5,7 @@ from leds.animations.animation import Animation
 class led_chase_animation(Animation):
 
     def __init__(self, cluster: LED_cluster, snake_len = 10, bg_color = (0, 0, 0), snake_color = (0, 0, 255), glow_radius = 15):
-        super().__init__(cluster)
+        super().__init__("led_chase", cluster)
 
         self.set_options({
             "snake_len": snake_len,

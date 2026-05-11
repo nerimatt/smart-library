@@ -9,7 +9,7 @@ from leds.color import RGBRotate
 
 class rainbow_animation(Animation):
     def __init__(self, cluster: LED_cluster):
-        super().__init__(cluster)
+        super().__init__("rainbow", cluster)
 
         self._steps = self._step_loop()
 

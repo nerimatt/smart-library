@@ -26,7 +26,7 @@ class Animation_Manager:
         # every function must only execute one frame per function call
         # save in array so if you switch to another animation and back to this it saves it
         self.animations = [
-            fade_animation(cluster, conf["led_strips"]["default_color"]),
+            fade_animation(cluster, conf["led_strips"]["default_color"], True),
             rainbow_animation(cluster),
             led_chase_animation(cluster),
         ]
