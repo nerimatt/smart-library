@@ -1,12 +1,13 @@
-from json import load, dumps
+import json
+
+CONFIG_FILEPATH = "config.json"
 
 def conf_load():
-    with open("config.json", "r") as file:
-        config = load(file)
-    return config
+    with open(CONFIG_FILEPATH, "r") as file:
+        return json.load(file)
 
 def conf_print(conf):
-    print(dumps(data, indent = 4))
+    print(json.dumps(conf, indent = 4))
 
 
 if __name__ == "__main__":

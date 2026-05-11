@@ -1,0 +1,42 @@
+{
+    "timers": [
+        {
+            "id": "everyday-winter",
+            "enabled": true,
+            "times": ["18:30"],
+            "days": ["mon", "tue", "wed", "thu", "fri", "sat", "sun"],
+            "action": {
+                "func": "fill",
+                "col": [4, 3, 0],
+                "stop_animations": false
+            }
+
+        },
+        {
+            "id": "night",
+            "enabled": true,
+            "times": ["20:00"],
+            "days": ["mon", "tue", "wed", "thu", "fri", "sat", "sun"],
+            "action": {
+                "func": "fill",
+                "col": [0, 4, 6],
+                "stop_animations": false
+            }
+
+        },
+
+        {
+            "id": "off",
+            "enabled": true,
+            "times": ["2:00"],
+            "days": ["mon", "tue", "wed", "thu", "fri", "sat", "sun"],
+            "action": {
+                "func": "fill",
+                "col": [0, 0, 0],
+                "stop_animations": true
+            }
+
+        }
+
+    ]
+}

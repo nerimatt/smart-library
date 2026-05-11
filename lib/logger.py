@@ -59,7 +59,7 @@ class Logger:
     def Debug(self, msg, verbose = True):
         self._print(msg, level = self._level.DEBUG, verbose = verbose)
 
-    def Warning(self, msg, verbose = True):
+    def Warn(self, msg, verbose = True):
         self._print(msg, level = self._level.WARNING, verbose = verbose)
 
     def Error(self, msg, verbose = True):
