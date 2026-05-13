@@ -7,7 +7,7 @@
             "days": ["mon", "tue", "wed", "thu", "fri", "sat", "sun"],
             "action": {
                 "func": "fill",
-                "col": [4, 3, 0],
+                "color": [4, 3, 0],
                 "stop_animations": false
             }
 
@@ -19,7 +19,7 @@
             "days": ["mon", "tue", "wed", "thu", "fri", "sat", "sun"],
             "action": {
                 "func": "fill",
-                "col": [0, 4, 6],
+                "color": [0, 2, 3],
                 "stop_animations": false
             }
 
@@ -32,7 +32,7 @@
             "days": ["mon", "tue", "wed", "thu", "fri", "sat", "sun"],
             "action": {
                 "func": "fill",
-                "col": [0, 0, 0],
+                "color": [0, 0, 0],
                 "stop_animations": true
             }
 

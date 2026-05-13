@@ -5,6 +5,7 @@ from json import load
 from machine import ADC, Pin
 import sys
 from time import sleep
+import _thread
 
 from accurate_time import set_time, get_time
 from sdcard import mount_sd_card
@@ -12,7 +13,8 @@ from wifi import wifi_connect
 from config import conf_load
 from logger import Logger
 import leds
-from leds.animation_manager import Animation_Manager
+from leds.animation_manager import AnimationManager
+from clock.timer_manager import TimerManager
 
 def main():
     logger = Logger()
@@ -35,40 +37,41 @@ def main():
     potentiometer.atten(ADC.ATTN_11DB) # set adc attenuation to full 3.3v
 
     cluster = leds.cluster_create(conf)
-    cluster_animation_manager = Animation_Manager(logger, cluster, conf)
+    cluster_animation_manager = AnimationManager(logger, cluster, conf) # NOTE: create in LED_cluster.anim
 
 
     ############## get boot permissions ##############
+    # TODO: create button class
     if btn_red.value(): #NOTE: hold red button to avoid booting
 
         logger.Error("Did not have permissions to boot")
         return
 
-    logger.Info("Booting up")
-
 
     ############## start ##############
-    if not conf["offline"]:
+    timer_manager = TimerManager(logger)
+
+    if conf["offline"]:
+        logger.Warn("esp is offline (disabled in config). cannot use webservers, and time")
+        timer_manager.disable()
+    else:
         wifi_connect(logger, conf["debugging"])
         set_time()
-    else:
-        logger.Warn("esp is offline (disabled in config). cannot use webservers, and time")
 
 
+    logger.Info("starting")
     leds.cluster_blink(cluster, 3)
 
-    #import tests.test_components.screen
-    # import tests.test_components.test_led_strips.py
-    # import tests.test_components.test_led_cluster
+    _thread.start_new_thread(timer_manager.loop) # will sleep till timers run out
 
-    # cluster_animation_manager.set_animation(Animation_Manager.FADE, {"color": (255, 0, 0)})
+    cluster_animation_manager.set_animation(AnimationManager.FADE, {"color": (255, 0, 0)})
 
 
-    # while True:
-    #     cluster_animation_manager.step()
-    #     cluster.update()
+    while True:
+        cluster_animation_manager.step()
+        cluster.update()
 
-    #     sleep(1 / conf["fps"])
+        sleep(1 / conf["fps"])
 
 
 
