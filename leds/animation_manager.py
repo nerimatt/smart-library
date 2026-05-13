@@ -5,15 +5,16 @@ from leds.animations.fade import fade_animation
 from leds.animations.rainbow import rainbow_animation
 from leds.animations.led_chase import led_chase_animation
 
+from time import sleep
 
 
-
-class Animation_Manager:
+class AnimationManager:
 
     animating = False
     current_animation = None
 
     # animations idx in array
+    NONE = -1
     FADE = 0
     RAINBOW = 1
     LED_CHASE = 2
@@ -44,6 +45,9 @@ class Animation_Manager:
     # perform one frame of the selected animation
     # NOTE: the cluster is updated in main, outside of this, in case some other changes are made
     def step(self):
+        if self.current_animation == self.NONE:
+            return
+
         if self.current_animation == None:
             self.logger.Error("no animation selected")
             return
@@ -65,12 +69,12 @@ if __name__ == "__main__":
     conf = conf_load()
 
     cluster = leds.cluster_create(conf)
-    cluster_animation_manager = Animation_Manager(logger, cluster, conf)
+    cluster_animation_manager = AnimationManager(logger, cluster, conf)
 
 
-    cluster_animation_manager.set_animation(Animation_Manager.FADE)
-    # cluster_animation_manager.set_animation(Animation_Manager.RAINBOW)
-    # cluster_animation_manager.set_animation(Animation_Manager.LED_CHASE)
+    cluster_animation_manager.set_animation(AnimationManager.FADE)
+    # cluster_animation_manager.set_animation(AnimationManager.RAINBOW)
+    # cluster_animation_manager.set_animation(AnimationManager.LED_CHASE)
 
     while True:
         cluster_animation_manager.step()

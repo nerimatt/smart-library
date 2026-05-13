@@ -1,5 +1,8 @@
 from leds.LED_strip import LED_strip
 from leds.LED_cluster import LED_cluster, LED_segment
+from leds.animation_manager import AnimationManager
+
+from logger import Logger
 
 from time import sleep
 
@@ -42,5 +45,30 @@ def cluster_blink(cluster: LED_cluster, iterations: int):
 
         cluster.off()
         sleep(interval)
+
+
+def cluster_execute_dict_action(cluster: LED_cluster, animation_manager: AnimationManager, logger: Logger, action: dict):
+    func = action.get("func", None)
+    if func == None:
+        logger.Error("'func' key not in action dictionary")
+        return
+
+    elif func == "fill":
+        col = action.get("color", None)
+        if col == None:
+            logger.Error("'color' key not in action dictionary")
+            return
+
+        cluster.fill(col)
+
+    else:
+        logger.Error(f"func '{func}' not recognized")
+        return
+
+    if action.get("stop_animations", False):
+        animation_manager.set_animation(animation_manager.NONE)
+
+
+
 
 
