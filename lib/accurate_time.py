@@ -54,6 +54,7 @@ def set_time():
     UTC_OFFSET = _get_utc_offset(TIMEZONE)
 
 def get_time():
+    # (year, month, day, hour, min, sec 0-61 (includes leap second), week day 0-6, day of year 1-366, should be daylight saving (not present))
     return time.localtime(time.time() + UTC_OFFSET)
 
 if __name__ == "__main__":
