@@ -1,5 +1,5 @@
 {
-    "boot": false,
+    "boot": true,
     "fps": 30,
     "offline": false,
     "debugging": true,

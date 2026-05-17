@@ -48,7 +48,13 @@ def cluster_blink(cluster: LED_cluster, iterations: int):
 
 
 def cluster_execute_dict_action(cluster: LED_cluster, animation_manager: AnimationManager, logger: Logger, action: dict):
+    logger.Info(f"action will be executed on cluster: {action}")
     func = action.get("func", None)
+
+    if action.get("stop_animations", False):
+        animation_manager.pause_animation()
+
+
     if func == None:
         logger.Error("'func' key not in action dictionary")
         return
@@ -60,13 +66,12 @@ def cluster_execute_dict_action(cluster: LED_cluster, animation_manager: Animati
             return
 
         cluster.fill(col)
+        logger.Info(f"filled cluster with color: {col}")
 
     else:
         logger.Error(f"func '{func}' not recognized")
         return
 
-    if action.get("stop_animations", False):
-        animation_manager.set_animation(animation_manager.NONE)
 
 
 

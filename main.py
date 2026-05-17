@@ -62,15 +62,27 @@ def main():
     logger.Info("starting")
     leds.cluster_blink(cluster, 3)
 
-    _thread.start_new_thread(timer_manager.loop) # will sleep till timers run out
+    # save action in var so cluster doesnt get modified in parallel
+    timer_action = {
+        "action": None,
+    }
+    def timer_manager_loop():
+        while True:
+            timer_action["action"] = timer_manager.sleep_till_next_timer(logger) # will sleep till timers run out
+    _thread.start_new_thread(timer_manager_loop, ())
 
-    cluster_animation_manager.set_animation(AnimationManager.FADE, {"color": (255, 0, 0)})
+    cluster_animation_manager.set_animation(AnimationManager.FADE, {"color": (128, 0, 0)})
 
 
     while True:
         cluster_animation_manager.step()
-        cluster.update()
 
+        if timer_action["action"]:
+            leds.cluster_execute_dict_action(cluster, cluster_animation_manager, logger, timer_action["action"])
+            timer_action["action"] = None
+
+
+        cluster.update()
         sleep(1 / conf["fps"])
 
 

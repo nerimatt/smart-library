@@ -6,7 +6,7 @@ class Animation:
     _max_brightness: int = 128 # 0 < x <= 256
 
     _steps = None # loop iterator to be implemented animation specific
-    options: dict = None # dictionary, diff for each animation
+    options: dict = dict() # different for each animation
     id: str
 
     cluster: LED_cluster
@@ -18,9 +18,13 @@ class Animation:
     def step(self):
         return next(self._steps)
 
-    def set_options(self, opt = None):
-        if opt != None:
-            self.options = opt
+    # this will add on top of existing options,
+    # if option is already set it will override it
+    def set_options(self, opt: dict = None):
+        if opt == None: return
+
+        for key in opt.keys():
+            self.options[key] = opt[key]
 
     def modify_option(self, key, value):
         if key in self.options.keys():

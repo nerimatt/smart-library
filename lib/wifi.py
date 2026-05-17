@@ -14,6 +14,10 @@ def wifi_connect(logger: Logger, verbose = False) -> network.WLAN:
     station = network.WLAN(network.STA_IF)
     station.active(True)
 
+    if station.isconnected():
+        logger.Info(f"already connected at wifi: '{station.config("ssid")}'")
+        return
+
     # get available networks
     networks = station.scan()
     available_networks = [network[0].decode() for network in networks]

@@ -14,7 +14,6 @@ class AnimationManager:
     current_animation = None
 
     # animations idx in array
-    NONE = -1
     FADE = 0
     RAINBOW = 1
     LED_CHASE = 2
@@ -37,15 +36,22 @@ class AnimationManager:
             self.logger.Error("selected animation does not exist")
             return
 
+        self.logger.Info(f"led cluster animation set to: {animation_enum}")
         self.current_animation = self.animations[animation_enum]
+        self.animating = True
 
         if animation_options != None:
             self.current_animation.set_options(animation_options)
 
+    def pause_animation(self):
+        self.animating = False
+        self.current_animation = None # progress saved in animations array
+        self.logger.Info("led cluster animations paused")
+
     # perform one frame of the selected animation
     # NOTE: the cluster is updated in main, outside of this, in case some other changes are made
     def step(self):
-        if self.current_animation == self.NONE:
+        if not self.animating:
             return
 
         if self.current_animation == None:

@@ -57,6 +57,11 @@ def get_time():
     # (year, month, day, hour, min, sec 0-61 (includes leap second), week day 0-6, day of year 1-366, should be daylight saving (not present))
     return time.localtime(time.time() + UTC_OFFSET)
 
+# if you import timezone directly it doesnt get updated, this does
+def get_timezone():
+    global TIMEZONE
+    return TIMEZONE
+
 if __name__ == "__main__":
     import wifi
     from logger import Logger

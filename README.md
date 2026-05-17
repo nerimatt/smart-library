@@ -7,6 +7,7 @@ esp to control various sensors in my library
 we dont need to connect 5v, it will be provided byu library, so we can debug on pc while library is powered by wall plug
 
 ## todo
+* cluster put mutexes to edit
 * at boot, load config and save in memory to be globally accessible (see if it is doable)
 * find way to upload to sd card, move alarms there
 * add motion sensors

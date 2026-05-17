@@ -3,7 +3,7 @@
         {
             "id": "everyday-winter",
             "enabled": true,
-            "times": ["18:30"],
+            "times": [ [18, 30] ],
             "days": [0, 1, 2, 3, 4, 5, 6],
             "months": [0, 1, 2, 3, 8, 9, 10, 11],
             "action": {
@@ -16,13 +16,13 @@
         {
             "id": "night",
             "enabled": true,
-            "times": ["20:00"],
+            "times": [ [20, 0] ],
             "days": [0, 1, 2, 3, 4, 5, 6],
             "months": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
             "action": {
                 "func": "fill",
                 "color": [0, 2, 3],
-                "stop_animations": false
+                "stop_animations": true
             }
 
         },
@@ -30,7 +30,7 @@
         {
             "id": "off",
             "enabled": true,
-            "times": ["2:00", "12:00"],
+            "times": [ [2, 0], [12, 0] ],
             "days": [0, 1, 2, 3, 4, 5, 6],
             "months": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
             "action": {
