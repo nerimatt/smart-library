@@ -26,7 +26,7 @@ class AnimationManager:
         # every function must only execute one frame per function call
         # save in array so if you switch to another animation and back to this it saves it
         self.animations = [
-            fade_animation(cluster, conf["led_strips"]["default_color"], True),
+            fade_animation(cluster, conf["led_strips"]["default_color"], False),
             rainbow_animation(cluster),
             led_chase_animation(cluster),
         ]
@@ -45,8 +45,16 @@ class AnimationManager:
 
     def pause_animation(self):
         self.animating = False
-        self.current_animation = None # progress saved in animations array
         self.logger.Info("led cluster animations paused")
+
+    def resume_animation(self):
+        self.animating = True
+        self.logger.Info("led cluster animations resumed")
+
+    def stop_animation(self):
+        self.animating = False
+        self.current_animation = None # progress saved in animations array
+        self.logger.Info("led cluster animations stopped")
 
     # perform one frame of the selected animation
     # NOTE: the cluster is updated in main, outside of this, in case some other changes are made

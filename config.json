@@ -6,7 +6,7 @@
     "mount_sd": false,
 
     "led_strips": {
-        "default_color": [255, 191, 0],
+        "default_color": [127, 95, 0],
         "pin_1": 12,
         "pin_2": 13,
 

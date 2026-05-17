@@ -55,7 +55,7 @@ def main():
         logger.Warn("esp is offline (disabled in config). cannot use webservers, and time")
         timer_manager.disable()
     else:
-        wifi_connect(logger, conf["debugging"])
+        wifi_connect(logger, conf["debugging"], True)
         set_time()
 
 
@@ -75,12 +75,11 @@ def main():
 
 
     while True:
-        cluster_animation_manager.step()
-
         if timer_action["action"]:
             leds.cluster_execute_dict_action(cluster, cluster_animation_manager, logger, timer_action["action"])
             timer_action["action"] = None
 
+        cluster_animation_manager.step()
 
         cluster.update()
         sleep(1 / conf["fps"])

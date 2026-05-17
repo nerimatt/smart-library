@@ -15,6 +15,30 @@ class DayEnum:
     SAT = 5
     SUN = 6
 
+weekdays = [
+    "mon",
+    "tue",
+    "wed",
+    "thu",
+    "fri",
+    "sat",
+    "sun",
+]
+
+months = [
+    "jan",
+    "feb",
+    "march",
+    "april",
+    "may",
+    "june",
+    "july",
+    "august",
+    "sep",
+    "oct",
+    "nov",
+    "dec"
+]
 
 class TimerManager:
     TIMER_FILEPATH = "data/timers.json"
@@ -50,14 +74,19 @@ class TimerManager:
         )
 
     def prettify_encoding(self, timer_enc: int) -> str:
-        pass
+        month, day, hour, minute = self.decode_timer(timer_enc)
+        return f"{months[month - 1]} {weekdays[day]} at {hour}:{minute:02d}"
 
     def find_next_timer(self):
         t = get_time()
 
         # convert time now in number from 0000 to 2359
         # encoded <month><day><hour><min> like -> 122300 -> feb wednesday 23:00
-        t_enc = self.encode_timer(t[1], t[6], t[3], t[4])
+        t_month = t[1]
+        t_weekday = t[6]
+        t_hour = t[3]
+        t_min = t[4]
+        t_enc = self.encode_timer(t_month, t_weekday, t_hour, t_min)
         # print(f"current time encoding: {t_enc}")
 
         # check if there are numbers greater than the number at our same day
@@ -72,13 +101,13 @@ class TimerManager:
 
             # create encoding for every day of the week and every month
             for (h2, min2) in timer["times"]:
-
                 for month in timer.get("months", []):
                     for day in timer.get("days", []):
                         t2_enc = self.encode_timer(month, day, h2, min2)
+                        cmp_enc = t2_enc # copy to modify
 
                         # if t2 is in the future (> 0) and closest, win
-                        diff = t2_enc - t_enc
+                        diff = cmp_enc - t_enc
 
                         # if we hit timer on exact hour and minute, skip it
                         if diff == 0:
@@ -88,15 +117,16 @@ class TimerManager:
                         # we dont care we "overflow" days and months, comparison is gonna be the same
                         # TODO: test
                         if diff < 0:
-                            # if days is bigger, add one week (+ 7 * 10^4)
-                            if day > t[2]:
-                                t2_enc += encode_timer(0, 7, 0, 0)
+                            if month < t_month:
+                                cmp_enc += self.encode_timer(12, 0, 0, 0) # add one year
 
 
-                            # if month is bigger, add one year
-                            if month > t[1]:
-                                t2_enc += encode_timer(12, 0, 0, 0)
 
+                            # if days is smaller than now, add one week (+ 7 * 10^4)
+                            if day < t_weekday:
+                                cmp_enc += self.encode_timer(0, 7, 0, 0)
+
+                            diff = cmp_enc - t_enc # recalculate diff
 
                         # new closest
                         if 0 < diff < closest_diff:
@@ -139,7 +169,7 @@ class TimerManager:
     def sleep_till_next_timer(self, logger) -> dict:
         timer, timer_enc = self.find_next_timer()
 
-        logger.Info(f"setting timer '{timer.get("id", 'err')}' for {self.decode_timer(timer_enc)}")
+        logger.Info(f"setting timer '{timer.get("id", 'err')}' for {self.prettify_encoding(timer_enc)}")
         time.sleep(self.seconds_till_timer(timer, timer_enc))
         logger.Info(f"timer '{timer.get("id", 'err')}' finished")
 
