@@ -1,6 +1,6 @@
-from leds.LED_strip import LED_strip
-from leds.LED_cluster import LED_cluster, LED_segment
-from leds.animation_manager import AnimationManager
+from src.leds.LED_strip import LED_strip
+from src.leds.LED_cluster import LED_cluster, LED_segment
+from src.leds.animation_manager import AnimationManager
 
 from logger import Logger
 
@@ -66,7 +66,7 @@ def cluster_execute_dict_action(cluster: LED_cluster, animation_manager: Animati
             return
 
         cluster.fill(col)
-        logger.Info(f"filled cluster with color: {col}")
+        logger.Debug(f"filled cluster with color: {col}")
 
     else:
         logger.Error(f"func '{func}' not recognized")

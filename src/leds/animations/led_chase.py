@@ -1,6 +1,6 @@
-from leds.LED_cluster import LED_cluster
+from ..LED_cluster import LED_cluster
 
-from leds.animations.animation import Animation
+from .animation import Animation
 
 class led_chase_animation(Animation):
 

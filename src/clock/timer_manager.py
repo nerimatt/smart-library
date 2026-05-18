@@ -16,46 +16,39 @@ class DayEnum:
     SUN = 6
 
 weekdays = [
-    "mon",
-    "tue",
-    "wed",
-    "thu",
-    "fri",
-    "sat",
-    "sun",
+    "monday",
+    "tuesday",
+    "wednesday",
+    "thursday",
+    "friday",
+    "saturday",
+    "sunday",
 ]
 
 months = [
-    "jan",
-    "feb",
+    "january",
+    "febuary",
     "march",
     "april",
     "may",
     "june",
     "july",
     "august",
-    "sep",
-    "oct",
-    "nov",
-    "dec"
+    "september",
+    "october",
+    "november",
+    "december"
 ]
 
 class TimerManager:
     TIMER_FILEPATH = "data/timers.json"
     timers: list[dict]
-    _enabled = True
 
     def __init__(self, logger: Logger):
         self.logger = logger
 
         with open(self.TIMER_FILEPATH, "r") as file:
             self.timers = json.load(file)["timers"]
-
-    def disable(self):
-        self._enabled = False
-
-    def enable(self):
-        self._enabled = True
 
     def save_timers(self):
         with open(self.TIMER_FILEPATH, "w") as file:
@@ -165,7 +158,6 @@ class TimerManager:
 
         return int((target - now).total_seconds())
 
-    # TODO: tesb
     def sleep_till_next_timer(self, logger) -> dict:
         timer, timer_enc = self.find_next_timer()
 

@@ -2,10 +2,10 @@
 
 # check hue rotations
 
-from leds.LED_cluster import LED_cluster
-from leds.animations.animation import Animation
+from ..LED_cluster import LED_cluster
+from .animation import Animation
 
-from leds.color import RGBRotate
+from ..color import RGBRotate
 
 class rainbow_animation(Animation):
     def __init__(self, cluster: LED_cluster):

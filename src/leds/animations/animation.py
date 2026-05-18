@@ -1,4 +1,4 @@
-from leds.LED_cluster import LED_cluster
+from ..LED_cluster import LED_cluster
 
 # base class where every animation has to inherit from
 class Animation:

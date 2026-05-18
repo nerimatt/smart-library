@@ -25,5 +25,7 @@
         "pin_scl": 14,
         "freq": 400000
 
-    }
+    },
+
+    "sakura_densya_url": "http://192.168.1.240"
 }

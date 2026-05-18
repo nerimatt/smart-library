@@ -1,9 +1,9 @@
 from logger import Logger
 
-from leds.LED_cluster import LED_cluster, LED_segment
-from leds.animations.fade import fade_animation
-from leds.animations.rainbow import rainbow_animation
-from leds.animations.led_chase import led_chase_animation
+from src.leds.LED_cluster import LED_cluster, LED_segment
+from src.leds.animations.fade import fade_animation
+from src.leds.animations.rainbow import rainbow_animation
+from src.leds.animations.led_chase import led_chase_animation
 
 from time import sleep
 
@@ -36,7 +36,7 @@ class AnimationManager:
             self.logger.Error("selected animation does not exist")
             return
 
-        self.logger.Info(f"led cluster animation set to: {animation_enum}")
+        self.logger.Debug(f"led cluster animation set to: {animation_enum}")
         self.current_animation = self.animations[animation_enum]
         self.animating = True
 

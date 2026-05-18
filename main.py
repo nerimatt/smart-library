@@ -12,9 +12,10 @@ from sdcard import mount_sd_card
 from wifi import wifi_connect
 from config import conf_load
 from logger import Logger
-import leds
-from leds.animation_manager import AnimationManager
-from clock.timer_manager import TimerManager
+import src.leds as leds
+from src.leds.animation_manager import AnimationManager
+from src.clock.timer_manager import TimerManager
+from src.sakura_densya import sakura_densya_execute_dict_action
 
 def main():
     logger = Logger()
@@ -51,33 +52,41 @@ def main():
     ############## start ##############
     timer_manager = TimerManager(logger)
 
+    # save action in var so cluster doesnt get modified in parallel
+    timer_d = {
+        "action": None,
+    }
+    def timer_manager_loop():
+        logger.Info("starting timer manager loop")
+        while True:
+            timer_d["action"] = timer_manager.sleep_till_next_timer(logger) # will sleep till timers run out
+
+
     if conf["offline"]:
         logger.Warn("esp is offline (disabled in config). cannot use webservers, and time")
-        timer_manager.disable()
     else:
         wifi_connect(logger, conf["debugging"], True)
         set_time()
+        _thread.start_new_thread(timer_manager_loop, ())
 
 
     logger.Info("starting")
     leds.cluster_blink(cluster, 3)
 
-    # save action in var so cluster doesnt get modified in parallel
-    timer_action = {
-        "action": None,
-    }
-    def timer_manager_loop():
-        while True:
-            timer_action["action"] = timer_manager.sleep_till_next_timer(logger) # will sleep till timers run out
-    _thread.start_new_thread(timer_manager_loop, ())
 
-    cluster_animation_manager.set_animation(AnimationManager.FADE, {"color": (128, 0, 0)})
+    # cluster_animation_manager.set_animation(AnimationManager.FADE, {"color": (128, 0, 0)})
 
 
     while True:
-        if timer_action["action"]:
-            leds.cluster_execute_dict_action(cluster, cluster_animation_manager, logger, timer_action["action"])
-            timer_action["action"] = None
+        if timer_d["action"]:
+            if cluster_action := timer_d["action"].get("cluster"):
+                leds.cluster_execute_dict_action(cluster, cluster_animation_manager, logger, cluster_action)
+
+            if sakura_action := timer_d["action"].get("sakura_densya"):
+                sakura_densya_execute_dict_action(logger, conf["sakura_densya_url"], sakura_action)
+
+            timer_d["action"] = None
+
 
         cluster_animation_manager.step()
 

@@ -28,7 +28,7 @@ def wifi_connect(logger: Logger, verbose = False, force = False) -> network.WLAN
         sleep(2)
 
     if verbose:
-        logger.Info(f"available networks: {available_networks}")
+        logger.Debug(f"available networks: {available_networks}")
 
 
     connected = False

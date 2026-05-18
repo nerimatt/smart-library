@@ -1,8 +1,8 @@
 from random import randint
 
-from leds.LED_cluster import LED_cluster
+from ..LED_cluster import LED_cluster
 
-from leds.animations.animation import Animation
+from .animation import Animation
 
 class fade_animation(Animation):
     _animation_speed = 150

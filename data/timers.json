@@ -7,12 +7,19 @@
             "days": [0, 1, 2, 3, 4, 5, 6],
             "months": [1, 2, 3, 4, 9, 10, 11, 12],
             "action": {
-                "func": "fill",
-                "color": [4, 3, 0],
-                "stop_animations": false
+                "cluster:": {
+                    "func": "fill",
+                    "color": [4, 3, 0],
+                    "stop_animations": false
+                },
+                "sakura_densya": {
+                    "ceiling-brightness": 100,
+                    "shop-brightness": 100
+                }
             }
 
         },
+
         {
             "id": "night",
             "enabled": true,
@@ -20,9 +27,15 @@
             "days": [0, 1, 2, 3, 4, 5, 6],
             "months": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
             "action": {
-                "func": "fill",
-                "color": [0, 2, 3],
-                "stop_animations": true
+                "cluster": {
+                    "func": "fill",
+                    "color": [0, 2, 3],
+                    "stop_animations": true
+                },
+                "sakura_densya": {
+                    "ceiling-brightness": 50,
+                    "shop-brightness": 50
+                }
             }
 
         },
@@ -30,13 +43,19 @@
         {
             "id": "off",
             "enabled": true,
-            "times": [ [2, 0], [23, 40] ],
+            "times": [ [2, 0] ],
             "days": [0, 1, 2, 3, 4, 5, 6],
             "months": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
             "action": {
-                "func": "fill",
-                "color": [0, 0, 0],
-                "stop_animations": true
+                "cluster": {
+                    "func": "fill",
+                    "color": [0, 0, 0],
+                    "stop_animations": true
+                },
+                "sakura_densya": {
+                    "ceiling": false,
+                    "shop": false
+                }
             }
 
         }

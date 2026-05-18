@@ -2,7 +2,7 @@
 
 from time import sleep
 
-from leds.LED_strip import LED_strip
+from src.leds.LED_strip import LED_strip
 
 # NOTE: wrapper of existing strip, so you could create overlapping segments or duplicates with no problem
 class LED_segment:

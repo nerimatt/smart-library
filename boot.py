@@ -1,6 +1,8 @@
 from config import conf_load
 from logger import Logger
 
+from sdcard import mount_sd_card
+
 logger = Logger()
 
 conf = conf_load()
