@@ -17,7 +17,26 @@
                     "shop-brightness": 100
                 }
             }
+        },
 
+
+        {
+            "id": "morning",
+            "enabled": true,
+            "times": [ [9, 0] ],
+            "days": [0, 1, 2, 3, 4, 5, 6],
+            "months": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+            "action": {
+                "cluster:": {
+                    "func": "fill",
+                    "color": [255, 191, 0],
+                    "stop_animations": false
+                },
+                "sakura_densya": {
+                    "ceiling-brightness": 100,
+                    "shop-brightness": 100
+                }
+            }
         },
 
         {
@@ -43,7 +62,7 @@
         {
             "id": "off",
             "enabled": true,
-            "times": [ [2, 0] ],
+            "times": [ [2, 0], [10, 0] ],
             "days": [0, 1, 2, 3, 4, 5, 6],
             "months": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
             "action": {

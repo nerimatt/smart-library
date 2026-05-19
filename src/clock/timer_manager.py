@@ -160,9 +160,10 @@ class TimerManager:
 
     def sleep_till_next_timer(self, logger) -> dict:
         timer, timer_enc = self.find_next_timer()
+        seconds_to_sleep = self.seconds_till_timer(timer, timer_enc)
 
-        logger.Info(f"setting timer '{timer.get("id", 'err')}' for {self.prettify_encoding(timer_enc)}")
-        time.sleep(self.seconds_till_timer(timer, timer_enc))
+        logger.Info(f"setting timer '{timer.get("id", 'err')}' for: {self.prettify_encoding(timer_enc)}, in {seconds_to_sleep / 60} minutes")
+        time.sleep(seconds_to_sleep)
         logger.Info(f"timer '{timer.get("id", 'err')}' finished")
 
         return timer.get("action", {})

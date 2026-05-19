@@ -44,7 +44,6 @@ def main():
     ############## get boot permissions ##############
     # TODO: create button class
     if btn_red.value(): #NOTE: hold red button to avoid booting
-
         logger.Error("Did not have permissions to boot")
         return
 
@@ -70,13 +69,15 @@ def main():
         _thread.start_new_thread(timer_manager_loop, ())
 
 
-    logger.Info("starting")
+    logger.Info("starting...")
     leds.cluster_blink(cluster, 3)
 
 
-    # cluster_animation_manager.set_animation(AnimationManager.FADE, {"color": (128, 0, 0)})
+    # cluster_animation_manager.set_animation(AnimationManager.FADE, {"color": (64, 37, 0)})
 
 
+    # TODO: add try in loop, and print exceptions exactly.
+    # TODO: check once in a while for wifi
     while True:
         if timer_d["action"]:
             if cluster_action := timer_d["action"].get("cluster"):

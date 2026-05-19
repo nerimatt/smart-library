@@ -11,7 +11,6 @@ class rainbow_animation(Animation):
     def __init__(self, cluster: LED_cluster):
         super().__init__("rainbow", cluster)
 
-        self._steps = self._step_loop()
 
         self.hue_rotation = RGBRotate()
         self.hue_rotation.set_hue_rotation(100)

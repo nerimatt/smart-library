@@ -4,8 +4,15 @@ import json
 
 from logger import Logger
 
+station = None
+
+def is_connected_to_wifi():
+    global station
+    return station and station.isconnected()
+
 # TODO: test if working and pass logger
 def wifi_connect(logger: Logger, verbose = False, force = False) -> network.WLAN:
+    global station
 
     with open("wifis.json", "r") as wififile:
         WIFI_DATA = json.load(wififile) # (SSID, PASSWORD)

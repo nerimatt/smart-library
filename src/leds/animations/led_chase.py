@@ -14,9 +14,6 @@ class led_chase_animation(Animation):
             "glow_radius": glow_radius,
         })
 
-        # save loop in var so it doesnt restart each time (first iter is fired automatically,
-        # but it starts from 0 so we dont notice)
-        self._steps = self._step_loop()
 
     def _get_glow_color(self, col, distance_from_body):
         # for every pixel of distance away, decrement the colo by 1 / glow_radius (at the last one it becomes 0 (distance_from_body == glow_radius))

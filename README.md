@@ -7,8 +7,9 @@ esp to control various sensors in my library
 we dont need to connect 5v, it will be provided byu library, so we can debug on pc while library is powered by wall plug
 
 ## todo
-* move all data/ to sd card
 * cluster in sd put current state, so if its fill(3,2,0) or fade with options when it boots up it remembers
+* cluster create own hotspot, so sakura densya can be connected to lib even without wifi, then find way to port to phone too (will need to create webserver panel for library with tab for models)
+* move all data/ to sd card
 * cluster put mutexes to edit
 * at boot, load config and save in memory to be globally accessible (see if it is doable)
 * find way to upload to sd card, move alarms there
