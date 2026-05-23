@@ -1,6 +1,8 @@
 import time
 import ntptime
 
+from logger import Logger
+
 
 # account for daylihjt savings
 # UTC+1  # CET, winter / standard time
@@ -43,7 +45,7 @@ def _get_utc_offset(timezone: int):
     return timezone * 60 * 60
 
 # NOTE: must be connected to the internet
-def set_time():
+def set_time(logger: Logger):
     global TIMEZONE, UTC_OFFSET
 
     # ntptime.host = "it.pool.ntp.org" # still returns basic utc
@@ -52,6 +54,8 @@ def set_time():
     # set timezone for italy
     TIMEZONE = _get_italy_timezone(time.time())
     UTC_OFFSET = _get_utc_offset(TIMEZONE)
+
+    logger.Debug(f"time set to {get_time()}")
 
 def get_time():
     # (year, month, day, hour, min, sec 0-61 (includes leap second), week day 0-6, day of year 1-366, should be daylight saving (not present))

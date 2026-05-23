@@ -15,9 +15,10 @@ def sakura_densya_execute_dict_action(logger: Logger, url: str, action: dict):
     }
 
     res = requests.post(url, data = body, headers = headers, parse_headers = False)
-    print(res.status_code)
-    print(res.text)
+    # print(res.status_code)
+    # print(res.text)
     logger.Info(f"sakura densya executing action: {action}")
+    logger.Debug(f"response {res.status_code}: {res.text}")
 
 
 if __name__ == "__main__":

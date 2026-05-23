@@ -9,7 +9,7 @@ import _thread
 
 from accurate_time import set_time, get_time
 from sdcard import mount_sd_card
-from wifi import wifi_connect
+import wifi
 from config import conf_load
 from logger import Logger
 import src.leds as leds
@@ -61,30 +61,45 @@ def main():
             timer_d["action"] = timer_manager.sleep_till_next_timer(logger) # will sleep till timers run out
 
 
+    wifi_station = None
     if conf["offline"]:
         logger.Warn("esp is offline (disabled in config). cannot use webservers, and time")
     else:
-        wifi_connect(logger, conf["debugging"], True)
-        set_time()
-        _thread.start_new_thread(timer_manager_loop, ())
+        # wifi_station = wifi.wifi_connect(logger, conf["debugging"], True)
+        wifi_station = wifi.wifi_connect(logger, conf["debugging"], False)
+        if wifi_station: # possible that wifi isnt found
+            set_time(logger)
+            _thread.start_new_thread(timer_manager_loop, ())
+        else:
+            logger.Error("could not get a wifi station working")
+
+    # # TODO: works with no problem, to implement the webserver
+    # def loop_inf():
+    #     while True:
+    #         print(12)
+    #         sleep(30)
+    # print("starnig third thread")
+    # _thread.start_new_thread(loop_inf, ())
 
 
     logger.Info("starting...")
     leds.cluster_blink(cluster, 3)
 
 
-    # cluster_animation_manager.set_animation(AnimationManager.FADE, {"color": (64, 37, 0)})
+    cluster_animation_manager.set_animation(AnimationManager.FADE, {"color": (64, 37, 0)})
 
 
     # TODO: add try in loop, and print exceptions exactly.
-    # TODO: check once in a while for wifi
+    # TODO: check once in a while for wifi (every 5 to ten minutes), might help to create timers
     while True:
         if timer_d["action"]:
             if cluster_action := timer_d["action"].get("cluster"):
                 leds.cluster_execute_dict_action(cluster, cluster_animation_manager, logger, cluster_action)
 
             if sakura_action := timer_d["action"].get("sakura_densya"):
-                sakura_densya_execute_dict_action(logger, conf["sakura_densya_url"], sakura_action)
+                # TODO: remove when hosting and making sakura connect to out accesspoint
+                if wifi.wifi_check_station_connection(wifi_station):
+                    sakura_densya_execute_dict_action(logger, conf["sakura_densya_url"], sakura_action)
 
             timer_d["action"] = None
 

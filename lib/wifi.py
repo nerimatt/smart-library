@@ -4,17 +4,14 @@ import json
 
 from logger import Logger
 
-station = None
+WIFI_JSON_PATH = "data/wifis.json"
 
-def is_connected_to_wifi():
-    global station
+def wifi_check_station_connection(station: network.WLAN) -> Bool:
     return station and station.isconnected()
 
-# TODO: test if working and pass logger
 def wifi_connect(logger: Logger, verbose = False, force = False) -> network.WLAN:
-    global station
 
-    with open("wifis.json", "r") as wififile:
+    with open(WIFI_JSON_PATH, "r") as wififile:
         WIFI_DATA = json.load(wififile) # (SSID, PASSWORD)
 
 
@@ -23,16 +20,20 @@ def wifi_connect(logger: Logger, verbose = False, force = False) -> network.WLAN
 
     if not force and station.isconnected():
         logger.Info(f"already connected at wifi: '{station.config("ssid")}'")
-        return
+        return station
 
     # get available networks
-    networks = station.scan()
-    available_networks = [network[0].decode() for network in networks]
-    while not available_networks:
-        print("no wifi found... \nretrying...")
-        networks = station.scan()
-        available_networks = [network[0].decode() for network in networks]
-        sleep(2)
+    available_networks = []
+    tries = 5
+    while tries > 0:
+        available_networks = [network[0].decode() for network in station.scan()]
+
+        if available_networks: break
+        else:
+            logger.Debug("no wifi found... \nretrying...")
+            tries -= 1
+            sleep(2)
+
 
     if verbose:
         logger.Debug(f"available networks: {available_networks}")
@@ -74,6 +75,8 @@ def wifi_connect(logger: Logger, verbose = False, force = False) -> network.WLAN
 def wifi_disconnect(station: network.WLAN):
     station.disconnect()  # Disconnect before moving to the next network
     station.active(False)  # Disable Wi-Fi interface
+
+
 
 if __name__ == "__main__":
     logger = Logger()
