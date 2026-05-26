@@ -40,6 +40,9 @@ def main():
     cluster = leds.cluster_create(conf)
     cluster_animation_manager = AnimationManager(logger, cluster, conf) # NOTE: create in LED_cluster.anim
 
+    # TODO: do in boot, even logger do it there and find way to make it global, or pass it from boot to main
+    accesspoint = wifi.wifi_setup_hotspot(logger, conf["accesspoint"])
+
 
     ############## get boot permissions ##############
     # TODO: create button class
@@ -97,8 +100,7 @@ def main():
                 leds.cluster_execute_dict_action(cluster, cluster_animation_manager, logger, cluster_action)
 
             if sakura_action := timer_d["action"].get("sakura_densya"):
-                # TODO: remove when hosting and making sakura connect to out accesspoint
-                if wifi.wifi_check_station_connection(wifi_station):
+                if wifi.wifi_check_station_connection(wifi_station): # TODO: remove when hosting and making sakura connect to out accesspoint
                     sakura_densya_execute_dict_action(logger, conf["sakura_densya_url"], sakura_action)
 
             timer_d["action"] = None
@@ -116,6 +118,7 @@ if __name__ == "__main__":
         main()
 
     except Exception as e:
+        # TODO: save logs
         sys.print_exception(e)
 
 

@@ -1,4 +1,4 @@
-from machine import Pin
+from machine import Pin, Timer
 
 class Button:
     _btn: Pin

@@ -19,7 +19,7 @@ def wifi_connect(logger: Logger, verbose = False, force = False) -> network.WLAN
     station.active(True)
 
     if not force and station.isconnected():
-        logger.Info(f"already connected at wifi: '{station.config("ssid")}'")
+        logger.Info(f"already connected at wifi: '{station.config("ssid")}', ip: {station.ifconfig()[0]}")
         return station
 
     # get available networks
@@ -75,6 +75,23 @@ def wifi_connect(logger: Logger, verbose = False, force = False) -> network.WLAN
 def wifi_disconnect(station: network.WLAN):
     station.disconnect()  # Disconnect before moving to the next network
     station.active(False)  # Disable Wi-Fi interface
+
+
+# NOTE: this access point is only for connected sensors / models that directly interact with wifi
+# models like sakura densya have to be connected to share info via sockets
+# phone doesnt have to be connected as library is also on wifi at home, where it broadcasts controller there
+def wifi_setup_hotspot(logger: Logger, ap_conf: dict) -> network.WLAN:
+    ap = network.WLAN(network.WLAN.IF_AP)
+    ap.active(True)
+
+    ap.config(
+        ssid = ap_conf["ssid"],
+        key = ap_conf["password"],
+        security = network.WLAN.SEC_WPA2
+    )
+
+    logger.Info(f"AP network active, ip: {ap.ifconfig()[0]}")
+    return ap
 
 
 
