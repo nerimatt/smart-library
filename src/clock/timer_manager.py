@@ -72,6 +72,7 @@ class TimerManager:
         month, day, hour, minute = self.decode_timer(timer_enc)
         return f"{months[month - 1]} {weekdays[day]} at {hour}:{minute:02d}"
 
+    # NOTE: returns always timer in the future
     def find_next_timer(self):
         t = get_time()
 
@@ -133,6 +134,7 @@ class TimerManager:
 
 
     # seconds it will take to arrive to timer
+    # doesnt check if its in the future cause its assured by find_next_timer
     def seconds_till_timer(self, timer: dict, timer_enc: int):
         t = get_time()
         timer_v = self.decode_timer(timer_enc)
@@ -151,7 +153,8 @@ class TimerManager:
             d = datetime.date.fromordinal(start + i)
 
             # find first matching occurence
-            if d.month == timer_v[0] and d.weekday() == timer_v[1]:
+            # months should be in allowed months, not perfectly the current month, so it works when month changes
+            if d.month in timer["months"] and d.weekday() == timer_v[1]:
                 target = datetime.datetime(
                     d.year, d.month, d.day,
                     timer_v[2], timer_v[3],
