@@ -9,9 +9,11 @@ import _thread
 
 from accurate_time import set_time, get_time
 from sdcard import mount_sd_card
+from button import Button
 import wifi
 from config import conf_load
 from logger import Logger
+
 import src.leds as leds
 from src.leds.animation_manager import AnimationManager
 from src.clock.timer_manager import TimerManager
@@ -31,22 +33,22 @@ def main():
     ############## load io and sensors ##############
     logger.Info("loading all IO and sensors")
 
-    btn_red = Pin(conf["io"]["pin_button_red"], Pin.IN, Pin.PULL_DOWN)
-    btn_green = Pin(conf["io"]["pin_button_green"], Pin.IN, Pin.PULL_DOWN)
+    btn_red = Button(logger, conf["io"]["pin_button_red"], "red")
+    btn_green = Button(logger, conf["io"]["pin_button_green"], "green")
 
     potentiometer = ADC(Pin(conf["io"]["pin_potentiometer"]))
     potentiometer.atten(ADC.ATTN_11DB) # set adc attenuation to full 3.3v
 
     cluster = leds.cluster_create(conf)
-    cluster_animation_manager = AnimationManager(logger, cluster, conf) # NOTE: create in LED_cluster.anim
+    cluster.off()
+    cluster_animation_manager = AnimationManager(logger, cluster, conf)
 
     # TODO: do in boot, even logger do it there and find way to make it global, or pass it from boot to main
     accesspoint = wifi.wifi_setup_hotspot(logger, conf["accesspoint"])
 
 
     ############## get boot permissions ##############
-    # TODO: create button class
-    if btn_red.value(): #NOTE: hold red button to avoid booting
+    if btn_red.pin_value(): #NOTE: hold red button to avoid booting
         logger.Error("Did not have permissions to boot")
         return
 
@@ -76,14 +78,6 @@ def main():
         else:
             logger.Error("could not get a wifi station working")
 
-    # # TODO: works with no problem, to implement the webserver
-    # def loop_inf():
-    #     while True:
-    #         print(12)
-    #         sleep(30)
-    # print("starnig third thread")
-    # _thread.start_new_thread(loop_inf, ())
-
 
     logger.Info("starting...")
     leds.cluster_blink(cluster, 3)
@@ -105,6 +99,8 @@ def main():
 
             timer_d["action"] = None
 
+        btn_red.update()
+        btn_green.update()
 
         cluster_animation_manager.step()
 

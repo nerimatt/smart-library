@@ -1,5 +1,6 @@
 import json
 import time
+from machine import Timer
 
 from logger import Logger
 from accurate_time import set_time, get_time, get_timezone
@@ -43,6 +44,7 @@ months = [
 class TimerManager:
     TIMER_FILEPATH = "data/timers.json"
     timers: list[dict]
+    _timer: Timer
 
     def __init__(self, logger: Logger):
         self.logger = logger
