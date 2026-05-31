@@ -1,6 +1,7 @@
 import network
 from utime import sleep
 import json
+import gc
 
 from logger import Logger
 
@@ -16,6 +17,8 @@ def wifi_connect(logger: Logger, verbose = False, force = False) -> network.WLAN
 
 
     station = network.WLAN(network.STA_IF)
+    station.active(False)
+    gc.collect()
     station.active(True)
 
     if not force and station.isconnected():
@@ -46,6 +49,8 @@ def wifi_connect(logger: Logger, verbose = False, force = False) -> network.WLAN
 
         # Connect to Wi-Fi
         try:
+            logger.Debug(f"free heap memory: {gc.mem_free()}")
+
             station.connect(wifi, WIFI_DATA[wifi])
             # Wait for the Wi-Fi connection
             while not station.isconnected():
@@ -69,6 +74,7 @@ def wifi_connect(logger: Logger, verbose = False, force = False) -> network.WLAN
             station.active(True)
 
     if not connected: logger.Error("couldnt connect to any wifi")
+    gc.collect()
 
     return station
 
@@ -81,6 +87,7 @@ def wifi_disconnect(station: network.WLAN):
 # models like sakura densya have to be connected to share info via sockets
 # phone doesnt have to be connected as library is also on wifi at home, where it broadcasts controller there
 def wifi_setup_hotspot(logger: Logger, ap_conf: dict) -> network.WLAN:
+    logger.Debug(f"free heap memory: {gc.mem_free()}")
     ap = network.WLAN(network.WLAN.IF_AP)
     ap.active(True)
 

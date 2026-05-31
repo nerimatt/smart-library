@@ -1,22 +1,28 @@
 from logger import Logger
 
 from src.leds.LED_cluster import LED_cluster, LED_segment
+from src.leds.animations.animation import Animation
 from src.leds.animations.fade import fade_animation
 from src.leds.animations.rainbow import rainbow_animation
 from src.leds.animations.led_chase import led_chase_animation
 
 from time import sleep
+import safe_json
+import json
 
 
 class AnimationManager:
 
-    animating = False
-    current_animation = None
+    animating: Bool = False
+    current_animation: Animation = None
+    current_animation_id: int # this is for export
 
     # animations idx in array
     FADE = 0
     RAINBOW = 1
     LED_CHASE = 2
+
+    STATE_FILENAME = "data/state/animation_manager.json"
 
     def __init__(self, logger: Logger, cluster: LED_cluster, conf):
         self.logger = logger
@@ -36,6 +42,7 @@ class AnimationManager:
             self.logger.Error("selected animation does not exist")
             return
 
+        self.current_animation_id = animation_enum
         self.logger.Debug(f"led cluster animation set to: {animation_enum}")
         self.current_animation = self.animations[animation_enum]
         self.animating = True
@@ -71,6 +78,36 @@ class AnimationManager:
         if res == -1:
             self.logger.Error("error in animation")
             return
+
+    def import_state(self):
+        state = safe_json.load(self.STATE_FILENAME, "r")
+        if state == {}:
+            self.logger.Error(f"could not load animation manager state from {self.STATE_FILENAME}, file missing or empty")
+            return
+
+        self.logger.Info(f"loading animation manager state from {self.STATE_FILENAME}")
+        self.animating = state.get("animating", False)
+        self.set_animation(state.get("current_animation_id", -1))
+
+        for anim in self.animations:
+            anim.set_options(state.get("anim_options", {}).get(anim.name, {}))
+
+
+    def export_state(self) -> None:
+        state = {
+            "animating": self.animating,
+            "current_animation_id": self.current_animation_id,
+            "anim_options": { anim.name: anim.options for anim in self.animations }
+        }
+
+        with open(self.STATE_FILENAME, "w") as file:
+            json.dump(state, file)
+
+        self.logger.Info(f"animation manager state saved in : {self.STATE_FILENAME}")
+
+
+
+
 
 
 

@@ -2,6 +2,7 @@
     "boot": true,
     "fps": 30,
     "offline": false,
+    "main_force_wifi_reconnection": false,
     "debugging": true,
     "mount_sd": false,
 

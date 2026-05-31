@@ -37,6 +37,8 @@ class LED_segment:
 
 
 class LED_cluster:
+    STATE_FILENAME = "data/state/led_cluster.json"
+
     def __init__(self, led_matrix_array: list[LED_segment], row_length: int, strips_used : list[led_strip], default_color = (255, 255, 255)) -> None:
         self.leds = led_matrix_array
         self.strips_used = strips_used
@@ -96,6 +98,12 @@ class LED_cluster:
 
             strip.set(idx - visited, col)
             return
+
+    def import_state(self):
+        pass
+
+    def export_state(self):
+        pass
 
 
 

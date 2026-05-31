@@ -53,7 +53,7 @@ def main():
         return
 
 
-    ############## start ##############
+    ############## configure start ##############
     timer_manager = TimerManager(logger)
 
     # save action in var so cluster doesnt get modified in parallel
@@ -71,7 +71,7 @@ def main():
         logger.Warn("esp is offline (disabled in config). cannot use webservers, and time")
     else:
         # wifi_station = wifi.wifi_connect(logger, conf["debugging"], True)
-        wifi_station = wifi.wifi_connect(logger, conf["debugging"], False)
+        wifi_station = wifi.wifi_connect(logger, conf["debugging"], conf["main_force_wifi_reconnection"])
         if wifi_station: # possible that wifi isnt found
             set_time(logger)
             _thread.start_new_thread(timer_manager_loop, ())
@@ -79,15 +79,17 @@ def main():
             logger.Error("could not get a wifi station working")
 
 
-    logger.Info("starting...")
     leds.cluster_blink(cluster, 3)
+    logger.Info("starting main loop...")
 
 
-    cluster_animation_manager.set_animation(AnimationManager.FADE, {"color": (64, 37, 0)})
+    # cluster_animation_manager.set_animation(AnimationManager.FADE, {"color": (64, 37, 0)})
+    cluster_animation_manager.import_state()
 
 
+    ############################ start ############################
     # TODO: add try in loop, and print exceptions exactly.
-    # TODO: check once in a while for wifi (every 5 to ten minutes), might help to create timers
+    # TODO: check once in a while for wifi (every 5 to ten minutes), use machine.Timers
     while True:
         if timer_d["action"]:
             if cluster_action := timer_d["action"].get("cluster"):
@@ -99,10 +101,14 @@ def main():
 
             timer_d["action"] = None
 
+        ############## update io ##############
         btn_red.update()
         btn_green.update()
 
+        ############## loop logic ##############
         cluster_animation_manager.step()
+
+        if btn_green.pressed: cluster_animation_manager.export_state()
 
         cluster.update()
         sleep(1 / conf["fps"])
