@@ -1,10 +1,10 @@
 {
     "boot": true,
     "fps": 30,
-    "offline": false,
+    "offline": true,
     "main_force_wifi_reconnection": false,
     "debugging": true,
-    "mount_sd": false,
+    "mount_sd": true,
 
     "led_strips": {
         "default_color": [127, 95, 0],

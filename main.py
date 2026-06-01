@@ -13,6 +13,7 @@ from button import Button
 import wifi
 from config import conf_load
 from logger import Logger
+from sdcard import is_sd_alive
 
 import src.leds as leds
 from src.leds.animation_manager import AnimationManager
@@ -44,8 +45,13 @@ def main():
     cluster_animation_manager = AnimationManager(logger, cluster, conf)
 
     # TODO: do in boot, even logger do it there and find way to make it global, or pass it from boot to main
-    accesspoint = wifi.wifi_setup_hotspot(logger, conf["accesspoint"])
+    # accesspoint = wifi.wifi_setup_hotspot(logger, conf["accesspoint"])
 
+    if conf["mount_sd"]:
+        if not is_sd_alive():
+            logger.Error("sd card not alive, check it")
+        else:
+            logger.Info("sd card working")
 
     ############## get boot permissions ##############
     if btn_red.pin_value(): #NOTE: hold red button to avoid booting

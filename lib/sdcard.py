@@ -22,6 +22,7 @@ Example usage on ESP8266:
 
 from micropython import const
 import time
+import os
 
 
 _CMD_TIMEOUT = const(100)
@@ -337,6 +338,14 @@ def mount_sd_card(logger, folder = "/sd"):
     #os.chdir("sd")
     #print("sd card contains:", os.listdir())
     logger.Info(f"mounted sd card in '{folder}'")
+
+def is_sd_alive(folder = "/sd"):
+    try:
+        os.stat(folder)
+        return True
+
+    except OSError:
+        return False
 
 if __name__ == "__main__":
     logger = Logger()

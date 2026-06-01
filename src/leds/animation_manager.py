@@ -8,21 +8,20 @@ from src.leds.animations.led_chase import led_chase_animation
 
 from time import sleep
 import safe_json
-import json
 
 
 class AnimationManager:
 
     animating: Bool = False
     current_animation: Animation = None
-    current_animation_id: int # this is for export
+    current_animation_id: int = -1 # this is for export
 
     # animations idx in array
     FADE = 0
     RAINBOW = 1
     LED_CHASE = 2
 
-    STATE_FILENAME = "data/state/animation_manager.json"
+    STATE_FILENAME = "sd/state/animation_manager.json"
 
     def __init__(self, logger: Logger, cluster: LED_cluster, conf):
         self.logger = logger
@@ -100,9 +99,8 @@ class AnimationManager:
             "anim_options": { anim.name: anim.options for anim in self.animations }
         }
 
-        with open(self.STATE_FILENAME, "w") as file:
-            json.dump(state, file)
 
+        safe_json.dump(state, self.STATE_FILENAME) # NOTE: THIS ASSUMES SD IS LOADED AND WORKING
         self.logger.Info(f"animation manager state saved in : {self.STATE_FILENAME}")
 
 
