@@ -18,12 +18,17 @@ def wifi_connect(logger: Logger, verbose = False, force = False) -> network.WLAN
 
     station = network.WLAN(network.STA_IF)
     station.active(False)
+    sleep(1)
     gc.collect()
     station.active(True)
+    sleep(1)
 
     if not force and station.isconnected():
         logger.Info(f"already connected at wifi: '{station.config("ssid")}', ip: {station.ifconfig()[0]}")
         return station
+
+    station.disconnect()
+    sleep(0.5)
 
     # get available networks
     available_networks = []
@@ -49,7 +54,7 @@ def wifi_connect(logger: Logger, verbose = False, force = False) -> network.WLAN
 
         # Connect to Wi-Fi
         try:
-            logger.Debug(f"free heap memory: {gc.mem_free()}")
+            logger.Info(f"trying to connect to {wifi}, using {WIFI_DATA[wifi]}")
 
             station.connect(wifi, WIFI_DATA[wifi])
             # Wait for the Wi-Fi connection

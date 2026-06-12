@@ -6,6 +6,7 @@ from machine import ADC, Pin
 import sys
 from time import sleep
 import _thread
+import gc
 
 from accurate_time import set_time, get_time
 from sdcard import mount_sd_card
@@ -22,6 +23,9 @@ from src.sakura_densya import sakura_densya_execute_dict_action
 
 def main():
     logger = Logger()
+
+    gc.collect()
+    logger.Debug(f"free heap memory: {gc.mem_free()}")
 
     conf = conf_load()
 
